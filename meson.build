@@ -592,11 +592,17 @@ dm1701_def += openrtx_def + stm32f405_def
 ## Radtel RT-4D
 ##
 
-rt4d_src = ['tests/platform/boot_test.c']
-rt4d_inc = []
+rt4d_src = ['platform/targets/RT-4D/platform.c',
+            'platform/drivers/stubs/audio_stub.c',
+            'platform/drivers/stubs/cps_io_stub.c',
+            'platform/drivers/stubs/display_stub.c',
+            'platform/drivers/stubs/keyboard_stub.c',
+            'platform/drivers/stubs/nvmem_stub.c',
+            'platform/drivers/stubs/radio_stub.c']
+rt4d_inc = ['platform/targets/RT-4D']
 rt4d_def = {'PLATFORM_RT4D': ''}
 
-rt4d_src += at32f423_src
+rt4d_src += openrtx_src + at32f423_src + ui_src_default
 rt4d_inc += openrtx_inc + at32f423_inc
 rt4d_def += openrtx_def + at32f423_def
 
@@ -815,7 +821,7 @@ mod17_opts = {
 rt4d_opts = {
   'sources'            : rt4d_src,
   'include_directories': rt4d_inc,
-  'dependencies'       : [],
+  'dependencies'       : [codec2_dep],
   'c_args'             : rt4d_args,
   'cpp_args'           : rt4d_args,
   'link_args'          : ['-Wl,-T../platform/mcu/AT32F423/linker_script.ld',
