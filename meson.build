@@ -301,6 +301,25 @@ stm32h743_inc += miosix_cm7_inc
 stm32h743_def += miosix_cm7_def
 
 ##
+## AT32F423
+##
+
+at32f423_src = ['platform/mcu/AT32F423/boot/startup.cpp',
+                'platform/mcu/AT32F423/boot/bsp.cpp',
+                'platform/mcu/AT32F423/boot/libc_integration.cpp',
+                'platform/mcu/CMSIS/Device/Artery/AT32F423/Source/system_at32f423.c']
+
+at32f423_inc = ['platform/mcu/AT32F423',
+                'platform/mcu/CMSIS/Include',
+                'platform/mcu/CMSIS/Device/Artery/AT32F423/Include']
+
+at32f423_def = {'AT32F423CCT7':''}
+
+at32f423_src += miosix_cm4f_src
+at32f423_inc += miosix_cm4f_inc
+at32f423_def += miosix_cm4f_def
+
+##
 ## ----------------------- Platform specializations ----------------------------
 ##
 
@@ -569,6 +588,18 @@ dm1701_inc += openrtx_inc + stm32f405_inc
 dm1701_def += openrtx_def + stm32f405_def
 
 ##
+## Radtel RT-4D
+##
+
+rt4d_src = ['tests/platform/boot_test.c']
+rt4d_inc = []
+rt4d_def = {'PLATFORM_RT4D': ''}
+
+rt4d_src += at32f423_src
+rt4d_inc += openrtx_inc + at32f423_inc
+rt4d_def += openrtx_def + at32f423_def
+
+##
 ## -------------------------- Compilation arguments ----------------------------
 ##
 
@@ -690,6 +721,15 @@ foreach k, v : dm1701_def
   endif
 endforeach
 
+rt4d_args = []
+foreach k, v : rt4d_def
+  if v == ''
+    rt4d_args += '-D@0@'.format(k)
+  else
+    rt4d_args += '-D@0@=@1@'.format(k, v)
+  endif
+endforeach
+
 linux_opts = {
   'sources'            : linux_default_src,
   'include_directories': linux_inc,
@@ -769,6 +809,16 @@ mod17_opts = {
   'c_args'             : mod17_args,
   'cpp_args'           : mod17_args,
   'link_args'          : ['-Wl,-T../platform/mcu/STM32F4xx/stm32_1m+192k_rom.ld']
+}
+
+rt4d_opts = {
+  'sources'            : rt4d_src,
+  'include_directories': rt4d_inc,
+  'dependencies'       : [],
+  'c_args'             : rt4d_args,
+  'cpp_args'           : rt4d_args,
+  'link_args'          : ['-Wl,-T../platform/mcu/AT32F423/linker_script.ld',
+                          '-Wl,--print-memory-usage'],
 }
 
 ttwrplus_opts = {
@@ -866,6 +916,13 @@ targets = [
   {
     'name'     : 'mod17',
     'opts'     : mod17_opts,
+    'flashable': true,
+    'wrap'     : ' ',
+    'load_addr': ' '
+  },
+  {
+    'name'     : 'rt4d',
+    'opts'     : rt4d_opts,
     'flashable': true,
     'wrap'     : ' ',
     'load_addr': ' '
