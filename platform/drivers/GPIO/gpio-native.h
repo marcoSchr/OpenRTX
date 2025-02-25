@@ -26,7 +26,7 @@
 #include <gpio_stm32.h>
 #elif defined(MK22FN512xx)
 #include <gpio_mk22.h>
-#elif defined(AT32F423CCT7)
+#elif defined(AT32F423xx)
 #include "gpio_at32f423.h"
 #endif
 
