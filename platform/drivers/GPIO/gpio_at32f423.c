@@ -88,6 +88,13 @@ void gpio_setMode(const void *port, const uint8_t pin, const uint16_t mode)
             p->pull  |= 0x00 << (pin*2);
             break;
 
+        case OPEN_DRAIN_PU:
+            // (MODE=01 TYPE=1 PUP=00)
+            p->cfgr  |= 0x01 << (pin*2);
+            p->omode |= 0x01 << pin;
+            p->pull  |= 0x01 << (pin*2);
+            break;
+
         case ALTERNATE:
             // (MODE=10 TYPE=0 PUP=00)
             p->cfgr  |= 0x02 << (pin*2);
