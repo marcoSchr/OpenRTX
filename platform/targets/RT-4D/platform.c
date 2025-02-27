@@ -42,6 +42,7 @@ void platform_init()
     // Configure GPIOs
     gpio_setMode(GREEN_LED, OUTPUT);
     gpio_setMode(RED_LED,   OUTPUT);
+    gpio_setMode(PTT_SW,    INPUT_PULL_UP);
 }
 
 void platform_terminate()
