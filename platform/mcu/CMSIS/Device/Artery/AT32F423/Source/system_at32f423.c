@@ -43,7 +43,7 @@
 /** @addtogroup AT32F423_system_private_variables
   * @{
   */
-unsigned int system_core_clock           = HICK_VALUE; /*!< system clock frequency (core clock) */
+unsigned int system_core_clock           = 144000000; /*!< system clock frequency (core clock) */
 extern uint32_t __Vectors[];
 /**
   * @}
@@ -137,7 +137,7 @@ void SystemInit (void)
   CRM->clkint = 0x009F0000U;
 
   SetSysClock();
-    wait_for_power_stable();
+  wait_for_power_stable();
 
   SCB->VTOR = (uint32_t)(&__Vectors[0]);
 }
