@@ -42,78 +42,79 @@ void gpio_setMode(const void *port, const uint8_t pin, const uint16_t mode)
     gpio_type *p = (gpio_type *)(port);
     p->cfgr  &= ~(3 << (pin*2));
     p->omode &= ~(1 << pin);
+    p->odrvr &= ~(3 << (pin*2));
     p->pull  &= ~(3 << (pin*2));
 
     switch(mode)
     {
         case INPUT:
             // (CFGR=00 OMODE=0 PULL=00)
-            p->cfgr  |= 0x00 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_INPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
 
         case INPUT_PULL_UP:
             // (MODE=00 TYPE=0 PUP=01)
-            p->cfgr  |= 0x00 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x01 << (pin*2);
+            p->cfgr  |= GPIO_MODE_INPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_UP << (pin*2);
             break;
 
         case INPUT_PULL_DOWN:
             // (MODE=00 TYPE=0 PUP=10)
-            p->cfgr  |= 0x00 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x02 << (pin*2);
+            p->cfgr  |= GPIO_MODE_INPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_DOWN << (pin*2);
             break;
 
         case ANALOG:
             // (MODE=11 TYPE=0 PUP=00)
-            p->cfgr  |= 0x03 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_ANALOG << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
 
         case OUTPUT:
             // (MODE=01 TYPE=0 PUP=00)
-            p->cfgr  |= 0x01 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_OUTPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
 
         case OPEN_DRAIN:
             // (MODE=01 TYPE=1 PUP=00)
-            p->cfgr  |= 0x01 << (pin*2);
-            p->omode |= 0x01 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_OUTPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_OPEN_DRAIN << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
 
         case OPEN_DRAIN_PU:
             // (MODE=01 TYPE=1 PUP=00)
-            p->cfgr  |= 0x01 << (pin*2);
-            p->omode |= 0x01 << pin;
-            p->pull  |= 0x01 << (pin*2);
+            p->cfgr  |= GPIO_MODE_OUTPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_OPEN_DRAIN << pin;
+            p->pull  |= GPIO_PULL_UP << (pin*2);
             break;
 
         case ALTERNATE:
             // (MODE=10 TYPE=0 PUP=00)
-            p->cfgr  |= 0x02 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_MUX << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
 
         case ALTERNATE_OD:
             // (MODE=10 TYPE=1 PUP=00)
-            p->cfgr  |= 0x02 << (pin*2);
-            p->omode |= 0x01 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_MUX << (pin*2);
+            p->omode |= GPIO_OUTPUT_OPEN_DRAIN << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
 
         default:
             // Default to INPUT mode
-            p->cfgr  |= 0x00 << (pin*2);
-            p->omode |= 0x00 << pin;
-            p->pull  |= 0x00 << (pin*2);
+            p->cfgr  |= GPIO_MODE_INPUT << (pin*2);
+            p->omode |= GPIO_OUTPUT_PUSH_PULL << pin;
+            p->pull  |= GPIO_PULL_NONE << (pin*2);
             break;
     }
 }
