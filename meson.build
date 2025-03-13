@@ -481,10 +481,12 @@ mod17_def += openrtx_def + stm32f405_def
 rt4d_src = ['platform/targets/RT-4D/platform.c',
             'platform/drivers/stubs/audio_stub.c',
             'platform/drivers/stubs/cps_io_stub.c',
-            'platform/drivers/stubs/display_stub.c',
+            'platform/drivers/display/display_rt4d.c',
             'platform/drivers/keyboard/keyboard_rt4d.c',
             'platform/drivers/stubs/nvmem_stub.c',
-            'platform/drivers/stubs/radio_stub.c']
+            'platform/drivers/stubs/radio_stub.c',
+            'platform/drivers/SPI/spi_custom.c',
+    'platform/drivers/SPI/spi_bitbang.c']
 rt4d_inc = ['platform/targets/RT-4D']
 rt4d_def = {'PLATFORM_RT4D': ''}
 
