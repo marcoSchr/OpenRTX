@@ -22,6 +22,12 @@
 #include <interfaces/platform.h>
 #include <peripherals/gpio.h>
 #include <hwconfig.h>
+#include <adc_at32.h>
+#include <pthread.h>
+
+static pthread_mutex_t adcMutex;
+
+ADC_AT32_DEVICE_DEFINE(adc1, ADC1, &adcMutex, 3300000)
 
 
 static hwInfo_t hwInfo =
@@ -42,6 +48,10 @@ void platform_init()
     // Configure GPIOs
     gpio_setMode(GREEN_LED, OUTPUT);
     gpio_setMode(RED_LED,   OUTPUT);
+
+    gpio_setMode(AIN_VBAT,  ANALOG);
+
+    adcAt32_init(&adc1);
 }
 
 void platform_terminate()
@@ -53,7 +63,12 @@ void platform_terminate()
 
 uint16_t platform_getVbat()
 {
-   return 0;
+    /*
+  * Battery voltage is measured through an 1:7.4 voltage divider and
+  * adc1_getMeasurement returns a value in uV.
+  */
+    uint32_t vbat = adc_getVoltage(&adc1, ADC_VBAT_CH) * 74;
+    return vbat / 10000;
 }
 
 uint8_t platform_getMicLevel()
