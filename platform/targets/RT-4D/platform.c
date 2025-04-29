@@ -19,10 +19,12 @@
  *   along with this program; if not, see <http://www.gnu.org/licenses/>   *
  ***************************************************************************/
 
+#include <adc_at32.h>
+#include <spi_bitbang.h>
+#include <hwconfig.h>
+#include <interfaces/nvmem.h>
 #include <interfaces/platform.h>
 #include <peripherals/gpio.h>
-#include <hwconfig.h>
-#include <adc_at32.h>
 #include <pthread.h>
 
 static pthread_mutex_t adcMutex;
@@ -52,6 +54,7 @@ void platform_init()
     gpio_setMode(AIN_VBAT,  ANALOG);
 
     adcAt32_init(&adc1);
+    nvm_init();
 }
 
 void platform_terminate()

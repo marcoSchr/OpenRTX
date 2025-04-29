@@ -31,6 +31,7 @@ enum adcChannel
 };
 
 extern const struct spiCustomDevice display_spi;
+extern const struct spiCustomDevice flash_spi;
 
 /* Screen dimensions */
 #define CONFIG_SCREEN_WIDTH 128
