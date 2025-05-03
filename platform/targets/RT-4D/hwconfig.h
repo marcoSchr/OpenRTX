@@ -40,6 +40,9 @@ extern const struct spiCustomDevice flash_spi;
 #define CONFIG_SCREEN_CONTRAST
 #define CONFIG_DEFAULT_CONTRAST 91
 
+/* Screen has adjustable brightness */
+#define CONFIG_SCREEN_BRIGHTNESS
+
 /* Screen pixel format */
 #define CONFIG_PIX_FMT_BW
 
