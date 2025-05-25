@@ -28,7 +28,7 @@ void delayUs(unsigned int useconds)
 {
     // This delay has been calibrated to take x microseconds
     // It is written in assembler to be independent on compiler optimization
-    asm volatile("           mov   r1, #29    \n"
+    asm volatile("           mov   r1, #18    \n"
                  "           mul   r2, %0, r1 \n"
                  "           mov   r1, #0     \n"
                  "___loop_u: cmp   r1, r2     \n"
@@ -39,7 +39,7 @@ void delayUs(unsigned int useconds)
 
 void delayMs(unsigned int mseconds)
 {
-    register const unsigned int count=23175;
+    register const unsigned int count=18012;
 
     for(unsigned int i=0;i<mseconds;i++)
     {
